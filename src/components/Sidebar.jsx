@@ -2,10 +2,16 @@ import { Link } from "react-router-dom"
 import {AiOutlineDashboard,AiOutlineTeam} from 'react-icons/ai'
 import {BsListTask} from 'react-icons/bs'
 import {GoTasklist} from 'react-icons/go'
+import {RxCross2} from 'react-icons/rx'
 
-const Sidebar = () => {
+
+// eslint-disable-next-line react/prop-types
+const Sidebar = ({sideBarTogle, setsideBarTogle}) => {
   return (
-    <div className="p-4">
+    <div className="p-4 relative">
+        <div className="block md:hidden absolute top-0 right-2">
+        <RxCross2 size={18} onClick={()=>setsideBarTogle(!sideBarTogle)}/>
+        </div>
         <div className="mx-auto w-32">
             <img className="w-full" src="https://collaborate-project.eu/uploads/collaborate-logo-text.png?6bfec1&6bfec1" alt="logo" />
         </div>

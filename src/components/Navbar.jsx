@@ -4,8 +4,10 @@ import { ContextApi } from '../ContextApi/ContextApi'
 import { useContext, useEffect, useState } from 'react'
 import Modal from './Modal/Modal'
 import ProfileModel from './Modal/Profile'
- 
-const Navbar = () => {
+import {FaBars} from 'react-icons/fa'
+import {RiBarChartHorizontalFill} from 'react-icons/ri'
+// eslint-disable-next-line react/prop-types
+const Navbar = ({sideBarTogle, setsideBarTogle}) => {
     const {setUser, user  } = useContext(ContextApi)
     const [userMessage,setUserMessage] = useState([])
     const [teams, setTeams] = useState([]);
@@ -91,7 +93,7 @@ const Navbar = () => {
 
   return (
     <div className='flex justify-between items-center px-4 py-3 shadow-sm'>
-        <span>Hide</span>
+        <span>{sideBarTogle?<RiBarChartHorizontalFill size={18} onClick={()=>setsideBarTogle(!sideBarTogle)}/> :<FaBars size={18} onClick={()=>setsideBarTogle(!sideBarTogle)} />}</span>
         <div className='flex items-center gap-3'>
         <div className='group relative'>
         <div className="p-2 bg-gray-100 rounded-full">
