@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import {AiOutlineArrowUp,AiOutlineArrowDown} from 'react-icons/ai'
 // eslint-disable-next-line react/prop-types
 const AssignTaskTable = ({ randerToggle }) => {
   const [assignTasks, setAssignTasks] = useState([]);
@@ -20,13 +20,12 @@ const AssignTaskTable = ({ randerToggle }) => {
   const dataSort = (column) => {
     let newSortOrder = 'asc';
     if (column === sortColumn) {
-        // If the same column is clicked again, toggle the sorting order
         newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
     }
-    let sorted = [...data];
+    let sortedCopy = [...data];
 
   if (column === 'due') {
-    sorted.sort((a, b) => {
+    sortedCopy.sort((a, b) => {
       if (sortOrder === 'asc') {
         return a.newTask.due.localeCompare(b.newTask.due);
       } else {
@@ -34,23 +33,29 @@ const AssignTaskTable = ({ randerToggle }) => {
       }
     });
   } else if (column === 'priority') {
-    // Sort by priority logic here
+    sortedCopy.sort((a,b)=>{
+       if (sortOrder === 'asc') {
+        return JSON.parse(b.newTask.priority) - JSON.parse(a.newTask.priority)
+      }else{
+        return JSON.parse(a.newTask.priority) - JSON.parse(b.newTask.priority)
+    }
+    })
   } else if (column === 'process') {
-    // Sort by process logic here
+    sortedCopy.sort((a,b)=>{ 
+      if(sortOrder === 'asc'){
+       return JSON.parse(b.process) - JSON.parse(a.process)
+      }
+      else{
+        return JSON.parse(a.process) - JSON.parse(b.process)
+    }
+    })
+
   }
 
   setSortColumn(column);
   setSortOrder(newSortOrder);
-  setData(sorted);
-    // if (col === "due") {
-    //   const newData = data.sort(
-    //     (fd, pd) =>{
-    //         console.log(Date.parse(fd.newTask.due),Date.parse(pd.newTask.due)) 
-    //        return Date.parse(fd.newTask.due) - Date.parse(pd.newTask.due)}
-    //   );
-    //   setData(newData);
-    //   console.log('I am from Due')
-    // }
+  setData(sortedCopy);
+
   };
   
   useEffect(() => {
@@ -69,8 +74,8 @@ const AssignTaskTable = ({ randerToggle }) => {
   }, [randerToggle]);
 
   useEffect(() => {
-    // filterData();
-    const newAssignTasks = assignTasks.map((item) => {
+    let assignTasksCopy = [...assignTasks]
+    const newAssignTasks = assignTasksCopy.map((item) => {
         const newTeams = item.teamID.map((teamIDItem) =>
           teams.find((teamItem) => teamItem.id === teamIDItem)
         );
@@ -142,16 +147,16 @@ const AssignTaskTable = ({ randerToggle }) => {
                     </th>
                     <th
                       onClick={() => dataSort("due")}
-                      className="cursor-pointer px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
+                      className=" cursor-pointer px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
                     >
-                      Due
+                      <span className="flex items-center gap-2 ">Due {sortOrder==='asc'?<AiOutlineArrowUp size={18}/>:<AiOutlineArrowDown size={18}/>}</span>
                     </th>
 
-                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                      Priority
+                    <th onClick={() => dataSort("priority")} className=" cursor-pointer px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                    <span className="flex items-center gap-2 ">Priority {sortOrder==='asc'?<AiOutlineArrowUp size={18}/>:<AiOutlineArrowDown size={18}/>}</span>
                     </th>
-                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                      Process
+                    <th onClick={() =>dataSort('process')} className="cursor-pointer  py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                      <span className="flex items-center gap-2 ">Process{sortOrder==='asc'?<AiOutlineArrowUp size={18}/>:<AiOutlineArrowDown size={18}/>}</span>
                     </th>
                     <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                       Team Name
