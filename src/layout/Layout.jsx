@@ -22,7 +22,7 @@ const Layout = () => {
     </div>
     {
       sideBarTogle?null:<div
-      className="bg-black opacity-40 fixed w-full h-full top-0 left-0  "
+      className="bg-black opacity-40 fixed w-full h-full top-0 left-0 block md:hidden "
       onClick={()=>setsideBarTogle(!sideBarTogle)}
     ></div>
     }
