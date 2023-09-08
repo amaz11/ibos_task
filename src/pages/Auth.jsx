@@ -1,16 +1,18 @@
 import { useContext, useState } from "react";
 import {toast} from 'react-toastify'
 import { ContextApi } from "../ContextApi/ContextApi";
-import uniqid from 'uniqid'
+import { uqId } from "../utils/utils";
 const Auth = () => {
     const [login,setLogin] = useState(true)
     const [input,setInput] = useState({
-        id: uniqid(),
+        id: '',
+        image:'',
         Fname:'',
         Lname:'',
         email:'',
         password:'',
-        bio:""
+        bio:"",
+        message:[]
     })
     const {setUser} = useContext(ContextApi)
 
@@ -20,13 +22,15 @@ const Auth = () => {
       };
       const submitHandler = async (e) => {
         e.preventDefault();
+        const ID  = uqId() 
+        const newInput = {...input,id:ID}
         let users = localStorage.getItem('users')
         if(login){
-
            users = JSON.parse(users)
            const findEmail = users.find(item => item.email === input.email)
            if(findEmail.password === input.password){
-                const user =  btoa(findEmail)
+                let user = JSON.stringify(findEmail)
+                user =  btoa(user)
                 localStorage.setItem('user',user)
                 setUser(user)
            }else{
@@ -36,9 +40,11 @@ const Auth = () => {
         else{
             
             if(!users){
-                const arr = []
-                arr.push(input)
+                let arr = []
+                arr = [...arr,newInput]
                 localStorage.setItem('users',JSON.stringify(arr))
+                toast.success("Registration Successful")
+
             } 
             else{
                 users = JSON.parse(users)
@@ -49,10 +55,10 @@ const Auth = () => {
                     if(input.password.length<6){
                         toast.error("Password Must Be 6 Characters")
                     }else{
-                        users.push(input)
+                        users = [...users,newInput]
                         localStorage.setItem("users",JSON.stringify(users));
                         toast.success("Registration Successful")
-                        // setLogin(!login)
+                        setLogin(!login)
                     }
                 }
             }
@@ -76,7 +82,7 @@ const Auth = () => {
                 <div className="py-4 px-8">
                     {
                         login ? null :<>
-                        <div className="mb-4">
+                        {/* <div className="mb-4">
                         <div className="border relative w-32 h-32 rounded-full " style={{ backgroundImage:'url(https://png.pngtree.com/element_our/20190601/ourmid/pngtree-file-upload-icon-image_1344393.jpg)', backgroundRepeat:"no-repeat",backgroundSize:'cover',backgroundPosition: "" }}>
                             <div className="overflow-hidden">
                             <input
@@ -88,7 +94,24 @@ const Auth = () => {
                           
                         </div>
                        
-                      </div>
+                      </div> */}
+                       <div className="mb-4">
+                    <label
+                      className="block text-grey-darker text-sm font-bold mb-2"
+                      htmlFor="password"
+                    >
+                      Image Url
+                    </label>
+                    <input
+                      className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                      name="image"
+                      type="text"
+                      placeholder="Enter your img url"
+                      value={input.image}
+                        onChange={handelInput}
+                        required
+                    />
+                  </div>
                       <div className="flex mb-4">
                         <div className="w-1/2 mr-1">
                       <label

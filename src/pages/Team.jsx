@@ -2,6 +2,7 @@ import { useState } from "react"
 import Modal from "../components/Modal/Modal"
 import TeamTable from "../components/Table/TeamTable";
 import TeamForm from "../components/Form/TeamForm";
+import InviteModal from "../components/Modal/InviteModal";
 
 const Team = () => {
     const [modalToggle, setModalToggle] = useState(false);
@@ -9,7 +10,8 @@ const Team = () => {
 
   return (
     <div>
-        <div className="flex justify-end">
+        <div className="flex justify-end gap-4">
+            <InviteModal />
             <button className="px-2 py-1 bg-blue-400 hover:bg-blue-500 text-white font-bold rounded" onClick={()=>setModalToggle(!modalToggle)}>Create Team +</button>
         </div>
         <div>

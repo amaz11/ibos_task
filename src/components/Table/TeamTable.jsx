@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { ContextApi } from "../../ContextApi/ContextApi";
 
 // eslint-disable-next-line react/prop-types
 const TeamTable = ({randerToggle}) => {
   const [teams, setTeams] = useState([]);
+  const {user} = useContext(ContextApi)
   useEffect(() => {
     let getTeams = localStorage.getItem("teams");
     if (getTeams) {
@@ -10,10 +12,10 @@ const TeamTable = ({randerToggle}) => {
 
       setTeams(getTeams);
     }
-  }, [randerToggle]);
+  }, [randerToggle,user]);
   return (
     <div>
-      <div className="mx-auto">
+      <div className="mx-auto px-4">
         <div className="py-8">
           <div>
             <h2 className="text-2xl font-semibold leading-tight">All Team</h2>

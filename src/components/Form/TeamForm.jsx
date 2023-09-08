@@ -32,6 +32,7 @@ const TeamForm = ({randerToggle,setRanderToggle}) => {
         const newTeam = team.filter((member) => member.email !== email);
         setTeam(newTeam);
       };
+
       const createTeam = (e)=>{
         e.preventDefault();
         const ID  = uqId() 
@@ -39,7 +40,7 @@ const TeamForm = ({randerToggle,setRanderToggle}) => {
         let currTeam = localStorage.getItem('teams')
         if(!currTeam){
             let arr = []
-            arr.push(input)
+            arr = [...arr,input]
             localStorage.setItem('teams',JSON.stringify(arr))
             setRanderToggle(!randerToggle)
             toast.success("Team create Successful")
@@ -49,7 +50,7 @@ const TeamForm = ({randerToggle,setRanderToggle}) => {
             if(findTeam){
                 toast.warning('This Team Alrady Exist')
             }else{
-                currTeam.push(input)
+              currTeam = [...currTeam,input]
                 localStorage.setItem("teams",JSON.stringify(currTeam));
             setRanderToggle(!randerToggle)
                 toast.success("Team create Successful")
@@ -113,10 +114,10 @@ const TeamForm = ({randerToggle,setRanderToggle}) => {
             >
               {users.map((item) => (
                 <div
-                  className="mb-2 px-4 py-2 flex gap-4 items-center hover:bg-slate-100 cursor-pointer"
-                  onClick={() => memberSelect(item)}
+                  className="mb-2 px-4 py-2 flex gap-3 items-center hover:bg-slate-100 cursor-pointer"
                   key={item.email}
                 >
+                  <div className="flex gap-4 items-center">
                   <div className="w-10 h-10 rounded-full overflow-hidden">
                     <img
                       className="w-full rounded-full"
@@ -125,6 +126,10 @@ const TeamForm = ({randerToggle,setRanderToggle}) => {
                     />
                   </div>
                   <span>{item?.Fname}</span>
+                  </div>
+                  <div className="flex gap-1 items-center">
+                    <span className="p-1 bg-blue-400 hover:bg-blue-500 text-xs rounded text-white font-semibold" onClick={() => memberSelect(item)} >Add</span>
+                  </div>
                 </div>
               ))}
             </div>
